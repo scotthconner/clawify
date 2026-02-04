@@ -255,8 +255,9 @@ function generateOpenClawConfig(walletAddress: string): object {
           telegram: ['*'],
         },
       },
-      // Exec settings
+      // Exec settings - security: 'full' allows commands without approval
       exec: {
+        security: 'full',
         backgroundMs: 10000,
         timeoutSec: 1800,
       },
