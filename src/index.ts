@@ -178,6 +178,15 @@ function generateOpenClawConfig(walletAddress: string): object {
             theme: agentTheme,
             emoji: agentEmoji,
           },
+          // Ensure this agent has no sandbox restrictions
+          sandbox: {
+            mode: 'off',
+          },
+          // Allow all tools for this agent
+          tools: {
+            profile: 'full',
+            allow: ['*'],
+          },
         },
       ],
     },
@@ -230,17 +239,26 @@ function generateOpenClawConfig(walletAddress: string): object {
       redactSensitive: 'tools',
     },
     
-    // Tools configuration - permissive for TEE (already isolated)
+    // Tools configuration - fully permissive for TEE (already isolated)
     tools: {
-      // Allow all tools except browser/canvas (no display in TEE)
+      // Full profile = no restrictions
+      profile: 'full',
+      // Explicitly allow everything
+      allow: ['*'],
+      // Only deny browser/canvas (no display in TEE)
       deny: ['browser', 'canvas'],
       // Elevated mode allows host exec - safe in TEE
       elevated: {
         enabled: true,
         allowFrom: {
-          // Allow all configured telegram users, or '*' for pairing mode
-          telegram: allowedFrom.length > 0 ? allowedFrom : ['*'],
+          // Allow all telegram users
+          telegram: ['*'],
         },
+      },
+      // Exec settings
+      exec: {
+        backgroundMs: 10000,
+        timeoutSec: 1800,
       },
     },
     
