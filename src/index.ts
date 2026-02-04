@@ -160,6 +160,12 @@ function generateOpenClawConfig(walletAddress: string): object {
         },
         timeoutSeconds: 600,
         maxConcurrent: 3,
+        // Enable elevated mode by default (full exec access in TEE)
+        elevatedDefault: 'on',
+        // Disable sandbox since we're already in an isolated TEE
+        sandbox: {
+          mode: 'off',
+        },
       },
       // Identity goes in agents.list[], not agents.defaults
       list: [
@@ -224,14 +230,16 @@ function generateOpenClawConfig(walletAddress: string): object {
       redactSensitive: 'tools',
     },
     
-    // Tools configuration - security focused
+    // Tools configuration - permissive for TEE (already isolated)
     tools: {
-      allow: ['exec', 'process', 'read', 'write', 'edit', 'apply_patch'],
+      // Allow all tools except browser/canvas (no display in TEE)
       deny: ['browser', 'canvas'],
+      // Elevated mode allows host exec - safe in TEE
       elevated: {
         enabled: true,
         allowFrom: {
-          telegram: allowedFrom,
+          // Allow all configured telegram users, or '*' for pairing mode
+          telegram: allowedFrom.length > 0 ? allowedFrom : ['*'],
         },
       },
     },
