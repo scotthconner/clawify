@@ -83,7 +83,13 @@ npm run dev:docker
 
 ## TEE Deployment (EigenLayer Cloud)
 
-Deploy to a Trusted Execution Environment using EigenLayer Cloud:
+Deploy to a Trusted Execution Environment using EigenLayer Cloud.
+
+### Install the ecloud CLI
+
+If you don't have the ecloud CLI installed, follow the [EigenCloud Quickstart Guide](https://docs.eigencloud.xyz/eigencompute/get-started/quickstart) to get set up.
+
+### Deploy
 
 ```bash
 # Deploy to TEE (will build and push automatically)
